@@ -1,0 +1,7 @@
+parameters:
+#    piledge_document.example.class: Piledge\DocumentBundle\Example
+
+services:
+#    piledge_document.example:
+#        class: %piledge_document.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

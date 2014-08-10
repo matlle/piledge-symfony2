@@ -1,0 +1,6 @@
+{% extends "PiledgeGleBundle::layout.html.twig" %}
+
+{% block title %} {{ parent() }} - Home {% endblock %}
+{% block file_list %} 
+    <p>Hello, welcome to Piledge!</p>
+{% endblock %}

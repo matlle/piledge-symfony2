@@ -1,3 +1,7 @@
+piledge_document:
+    resource: "@PiledgeDocumentBundle/Resources/config/routing.yml"
+    prefix:   /
+
 piledge_gle:
     resource: "@PiledgeGleBundle/Resources/config/routing.yml"
     prefix:   /
