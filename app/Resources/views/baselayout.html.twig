@@ -273,8 +273,8 @@ $(document).ready(function(){
 		<ul class="nav nav-list" id="menuleft">
 
                     <li class="nav-header">Activities</li>
-                    <li class="active"><a href="index.php"><i class="icon-home"></i> Home</a></li>
-                    <li><a href="share.php"><i class="icon-upload"></i> Share a document</a></li>
+                    <li class="active"><a href="{{ path('piledgeGle_homepage') }}"><i class="icon-home"></i> Home</a></li>
+                    <li><a href="{{ path('piledgeDocument_upload') }}"><i class="icon-upload"></i> Share a document</a></li>
                     <li><a href="#">Following <span class="badge badge-info" style="float: right;">{# nb_following #}</span></a></li>
                     <li><a href="#">Followers <span class="badge badge-info" style="float: right;">{# nb_follower #}</span></a></li>
                     <li><a href="#">My documents <span class="badge badge-info" style="float: right;">{# nb_file #}</span></a></li>

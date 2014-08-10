@@ -1,0 +1,67 @@
+{% extends "PiledgeDocumentBundle::layout.html.twig" %}
+
+{% block title %} {{ parent() }} - Upload a document {% endblock %}
+
+{% block form_field %}
+   
+   <div>
+   
+    <ul class="nav nav-pills" style="height: 10px;">
+  <li class="active">
+    <a href="#">Upload a document</a>
+  </li>    
+  <li><a href="#">Write a full document</a></li>
+  <li><a href="#">Write a topic</a></li>
+</ul>
+  
+  </div>
+     
+     
+
+          
+         
+         <form action="{{ path('piledgeDocument_upload') }}" method="post" style="width: 400px; margin-left: -200px;" class="form-horizontal" id="form_doc_upload" enctype="multipart/form-data">
+             {# csrf_token #}
+
+             <div style="width: 800px; margin-left: 20px;">
+                 <h6>Upload a document and share it with the world</h6><hr/>
+             </div>
+
+             <div>
+
+             <div class="control-group"> 
+                 <div style="color: red; margin-left: 200px;">{# form.doc_file_name.errors #}</div>
+                 <label class="control-label" for="id_doc_file_name">Select a document: </label>
+                 <div class="controls">
+                     <input type="file" id="id_doc_file_name" name="doc_file_name" placeholder="Email">
+                 </div>
+             </div>
+
+             <div class="control-group">
+                 <div style="color: red; margin-left: 200px;">{# form.doc_title.errors #}</div>
+                 <label class="control-label" for="id_doc_title">Title: </label>
+                 <div class="controls">
+                     <input type="text" maxlength="300" id="id_doc_title" name="doc_title" style="width: 500px;" placeholder="Title">
+                 </div>
+             </div>
+
+             <div class="control-group">
+                 <div style="color: red; margin-left: 200px;">{# form.doc_description.errors #}</div>
+                 <label class="control-label" for="inputPassword">Description: </label>
+                 <div class="controls">
+                     <textarea id="id_doc_description" name="doc_description" style="width: 500px; height: 100px;" placeholder="Description"></textarea>
+                 </div>
+             </div>
+
+             <div class="control-group">
+                 <div class="controls"> 
+                     <button type="submit" class="btn btn-primary" style="float: left;">Upload now >></button>
+                 </div>
+             </div>
+             
+             </div>
+
+         </form>
+
+
+{% endblock %}

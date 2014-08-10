@@ -1,3 +1,21 @@
-piledge_document_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: PiledgeDocumentBundle:Default:index }
+piledgeDocument_show:
+    path:     /d/{id}
+    defaults: { _controller: PiledgeDocumentBundle:Document:show }
+    requirements:
+        id: \d+
+
+piledgeDocument_upload:
+    path:     /upload
+    defaults: { _controller: PiledgeDocumentBundle:Document:upload }
+ 
+piledgeDocument_update:
+    path:     /d/update/{id}
+    defaults: { _controller: PiledgeDocumentBundle:Document:update }
+    requirements:
+        id: \d+
+
+piledgeDocument_remove:
+    path:     /d/remove/{id}
+    defaults: { _controller: PiledgeDocumentBundle:Document:remove }
+    requirements:
+        id: \d+
