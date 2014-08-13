@@ -1,0 +1,534 @@
+<?php
+
+namespace Piledge\DocumentBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\ExecutionContextInterface;
+
+/**
+ * Document
+ *
+ * @ORM\Table(name="document")
+ * @ORM\Entity(repositoryClass="Piledge\DocumentBundle\Entity\DocumentRepository")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class Document
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="document_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $document_id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="document_ext", type="string", length=10)
+     * @Assert\Length(min="2")
+     */
+    private $document_ext;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="document_title", type="string", length=255)
+     * @Assert\Length(min="5")
+     */
+    private $document_title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="document_description", type="text")
+     * @Assert\NotBlank()
+     */
+    private $document_description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="document_type", type="string", length=100)
+     * @Assert\Length(min="2")
+     */
+    private $document_type;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="document_size", type="integer")
+     * @Assert\Range(min=1)
+     */
+    private $document_size;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="document_file_name", type="text")
+     */
+    private $document_file_name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="document_thumb_name", type="text")
+     */
+    private $document_thumb_name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="document_pdf_name", type="text")
+     */
+    private $document_pdf_name;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="document_number_of_page", type="integer")
+     * @Assert\Range(min=1)
+     */
+    private $document_number_of_page;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="document_created_at", type="datetime")
+     * @Assert\DateTime()
+     */
+    private $document_created_at;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="document_updated_at", type="datetime")
+     * @Assert\DateTime()
+     */
+    private $document_updated_at;
+    
+    /**
+     * @Assert\File(maxSize="20M")
+     */
+    private $file;
+
+    private $temp_file_name;
+       
+
+    public function __construct() {
+        $this->document_created_at = new \Datetime;
+        $this->document_updated_at = new \Datetime;
+    }
+
+    
+    protected function get_thumb($file_name) {
+        
+        $this->document_thumb_name = $this->getUploadRootDir().'/thumb_document/'.$this->document_file_name.'.png';
+        $thumb = new Imagick($file_name . '[0]');
+        $thumb->thumbnailImage(150, 200);
+        $thumb->setImageFormat('png');
+        $thumb->writeImage($this->document_thumb_name);
+    }
+
+
+    protected function get_number_of_pages($document)  {
+
+        $cmd = "/usr/bin/pdfinfo";          // Linux
+        //$cmd = "C:\\location\\pdfinfo.exe"; // Windows
+
+        // Parse entire output
+        exec("$cmd \"$document\"", $output);
+
+        // Iterate through lines
+        $pagecount = 0;
+        foreach($output as $op) {
+
+            // Extract the number
+            if(preg_match("/Pages:\s*(\d+)/i", $op, $matches) === 1) {
+                $pagecount = intval($matches[1]);
+                break;
+            }
+        }
+
+       return $pagecount;
+    }
+
+
+
+    /**
+     * @ORM\PreUpdate
+     * -- Pre Update document: Callback for update the document at every update of the entity
+     */
+    public function update_document_updated_at() {
+        $this->set_document_updated_at(new \Datetime());
+    }
+
+
+   /**
+    * @ORM\PrePersist()
+    * @ORM\PreUpdate()
+    */
+    public function preUpload() {
+
+        if ($this->file === null) {
+            return;
+        }
+        
+        $this->document_pdf_name = $this->file->getClientOriginalName();
+        $this->document_ex = $this->file->guessExtension();
+        $this->document_type = $this->file->getMimeType();
+        $this->document_size = $this->file->getClientSize();
+    }
+
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload() {
+
+        if ($this->file === null) {
+            return;
+        }
+
+        $this->document_file_name = $this->file->getClientOriginalName();
+        // If there is a old file, remove it
+        if ($this->temp_file_name !== null) {
+            $old_file = $this->getUploadRootDir().'/'.$this->document_id.'-'.$this->temp_file_name;
+            if (file_exists($old_file)) {
+                unlink($old_file);
+            }
+        }
+
+        $this->file->move($this->getUploadRootDir(), $this->document_id.'-'.$this->document_file_name); 
+        $this->get_thumb($this->getUploadRootDir().'/'.$this->document_id.'-'.$this->document_file_name);
+        $this->document_number_of_page = $this->get_number_of_pages($this->getUploadRootDir().'/'.$this->document_id.'-'.$this->document_file_name);
+
+    } 
+
+
+    /**
+     *  @ORM\PreRemove()
+     */
+    public function preRemoveUpload() {
+        $this->temp_file_name = $this->getUploadRootDir().'/'.$this->document_id.'-'.$this->document_file_name;
+
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload() {
+
+        if (file_exists($this->temp_file_name)) {
+            unlink($this->temp_file_name);
+        }
+    }
+
+
+    public function getUploadDir() {
+
+        return 'uploads/pdf';
+    }
+
+    
+    protected function getUploadRootDir() {
+
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+
+    public function getWebPath() {
+
+        return $this->getUploadDir().'/'.$this->document_id.'-'.$this->get_document_file_name();
+    }
+
+
+
+    /**
+     * Get document_id
+     *
+     * @return integer 
+     */
+    public function getDocumentId()
+    {
+        return $this->document_id;
+    }
+
+    /**
+     * Set document_ext
+     *
+     * @param string $documentExt
+     * @return Document
+     */
+    public function setDocumentExt($documentExt)
+    {
+        $this->document_ext = $documentExt;
+
+        return $this;
+    }
+
+    /**
+     * Get document_ext
+     *
+     * @return string 
+     */
+    public function getDocumentExt()
+    {
+        return $this->document_ext;
+    }
+
+    /**
+     * Set document_title
+     *
+     * @param string $documentTitle
+     * @return Document
+     */
+    public function setDocumentTitle($documentTitle)
+    {
+        $this->document_title = $documentTitle;
+
+        return $this;
+    }
+
+    /**
+     * Get document_title
+     *
+     * @return string 
+     */
+    public function getDocumentTitle()
+    {
+        return $this->document_title;
+    }
+
+    /**
+     * Set document_description
+     *
+     * @param string $documentDescription
+     * @return Document
+     */
+    public function setDocumentDescription($documentDescription)
+    {
+        $this->document_description = $documentDescription;
+
+        return $this;
+    }
+
+    /**
+     * Get document_description
+     *
+     * @return string 
+     */
+    public function getDocumentDescription()
+    {
+        return $this->document_description;
+    }
+
+    /**
+     * Set document_type
+     *
+     * @param string $documentType
+     * @return Document
+     */
+    public function setDocumentType($documentType)
+    {
+        $this->document_type = $documentType;
+
+        return $this;
+    }
+
+    /**
+     * Get document_type
+     *
+     * @return string 
+     */
+    public function getDocumentType()
+    {
+        return $this->document_type;
+    }
+
+    /**
+     * Set document_size
+     *
+     * @param integer $documentSize
+     * @return Document
+     */
+    public function setDocumentSize($documentSize)
+    {
+        $this->document_size = $documentSize;
+
+        return $this;
+    }
+
+    /**
+     * Get document_size
+     *
+     * @return integer 
+     */
+    public function getDocumentSize()
+    {
+        return $this->document_size;
+    }
+
+    /**
+     * Set document_file_name
+     *
+     * @param string $documentFileName
+     * @return Document
+     */
+    public function setDocumentFileName($documentFileName)
+    {
+        $this->document_file_name = $documentFileName;
+
+        return $this;
+    }
+
+    /**
+     * Get document_file_name
+     *
+     * @return string 
+     */
+    public function getDocumentFileName()
+    {
+        return $this->document_file_name;
+    }
+
+    /**
+     * Set document_thumb_name
+     *
+     * @param string $documentThumbName
+     * @return Document
+     */
+    public function setDocumentThumbName($documentThumbName)
+    {
+        $this->document_thumb_name = $documentThumbName;
+
+        return $this;
+    }
+
+    /**
+     * Get document_thumb_name
+     *
+     * @return string 
+     */
+    public function getDocumentThumbName()
+    {
+        return $this->document_thumb_name;
+    }
+
+    /**
+     * Set document_pdf_name
+     *
+     * @param string $documentPdfName
+     * @return Document
+     */
+    public function setDocumentPdfName($documentPdfName)
+    {
+        $this->document_pdf_name = $documentPdfName;
+
+        return $this;
+    }
+
+    /**
+     * Get document_pdf_name
+     *
+     * @return string 
+     */
+    public function getDocumentPdfName()
+    {
+        return $this->document_pdf_name;
+    }
+
+    /**
+     * Set document_number_of_page
+     *
+     * @param integer $documentNumberOfPage
+     * @return Document
+     */
+    public function setDocumentNumberOfPage($documentNumberOfPage)
+    {
+        $this->document_number_of_page = $documentNumberOfPage;
+
+        return $this;
+    }
+
+    /**
+     * Get document_number_of_page
+     *
+     * @return integer 
+     */
+    public function getDocumentNumberOfPage()
+    {
+        return $this->document_number_of_page;
+    }
+
+    /**
+     * Set document_created_at
+     *
+     * @param \DateTime $documentCreatedAt
+     * @return Document
+     */
+    public function setDocumentCreatedAt($documentCreatedAt)
+    {
+        $this->document_created_at = $documentCreatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get document_created_at
+     *
+     * @return \DateTime 
+     */
+    public function getDocumentCreatedAt()
+    {
+        return $this->document_created_at;
+    }
+
+    /**
+     * Set document_updated_at
+     *
+     * @param \DateTime $documentUpdatedAt
+     * @return Document
+     */
+    public function setDocumentUpdatedAt($documentUpdatedAt)
+    {
+        $this->document_updated_at = $documentUpdatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get document_updated_at
+     *
+     * @return \DateTime 
+     */
+    public function getDocumentUpdatedAt()
+    {
+        return $this->document_updated_at;
+    }
+
+
+    public function setFile($file) {
+
+        $this->file = $file;
+
+        if ($this->document_file_name !== null) {
+
+            $this->temp_file_name = $this->document_file_name;
+
+            $this->document_file_name = null;
+        }
+    }
+
+
+    public function getFile() {
+
+        return $this->file;
+    }
+
+
+}

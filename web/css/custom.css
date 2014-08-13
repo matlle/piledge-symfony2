@@ -493,3 +493,14 @@ a.accordion-toggle:hover {
 
 
 
+
+
+#piledge_documentbundle_document_document_description {
+    width: 500px;
+    height: 100px;
+}
+
+#piledge_documentbundle_document_document_title {
+    width: 500px;
+}
+
