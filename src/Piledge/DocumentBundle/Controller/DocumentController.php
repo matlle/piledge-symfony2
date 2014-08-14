@@ -21,8 +21,11 @@ class DocumentController extends Controller
         $form = $this->createForm(new DocumentType, $document);
 
         $request = $this->get('request');
+        $validator = $this->get('validator');
+        $errors = ''; 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
+            $errors = $validator->validate($document);
 
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
@@ -32,10 +35,21 @@ class DocumentController extends Controller
                 return $this->redirect($this->generateUrl('piledgeGle_homepage'));
             }
         }
+        
+        if (count($errors) > 0) {       
 
-        return $this->render('PiledgeDocumentBundle:Document:upload.html.twig', array(
+            return $this->render('PiledgeDocumentBundle:Document:upload.html.twig', array(
+                'form' => $form->createView(),
+                'errors' => $errors
+               ));
+
+        }else {
+
+            return $this->render('PiledgeDocumentBundle:Document:upload.html.twig', array(
                'form' => $form->createView()
                 ));
+        }
+
     }
 
     

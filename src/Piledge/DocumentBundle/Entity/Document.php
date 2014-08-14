@@ -37,7 +37,13 @@ class Document
      * @var string
      *
      * @ORM\Column(name="document_title", type="string", length=255)
-     * @Assert\Length(min="5")
+     * @Assert\Length(
+     *       min="5",
+     *       max="255",
+     *       minMessage="The title must be at least {{ limit }} characters",
+     *       maxMessage="The title can't be longer than {{ limit }} characters"
+     *       )
+     * @Assert\NotBlank(message="The title must not be empty. Please try again")
      */
     private $document_title;
 
@@ -45,7 +51,7 @@ class Document
      * @var string
      *
      * @ORM\Column(name="document_description", type="text")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="The description must not be empty. Please try again")
      */
     private $document_description;
 
@@ -111,11 +117,17 @@ class Document
     private $document_updated_at;
     
     /**
-     * @Assert\File(maxSize="20M")
+     * @Assert\File(
+     *      maxSize="20M", 
+     *      mimeTypes={"application/pdf", "application/x-pdf"}, 
+     *      mimeTypesMessage="Please Choose a pdf document valid. Try again"
+     *      )
      */
     private $file;
 
     private $temp_file_name;
+
+    private $document_path_name;
        
 
     public function __construct() {
@@ -126,8 +138,8 @@ class Document
     
     protected function get_thumb($file_name) {
         
-        $this->document_thumb_name = $this->getUploadRootDir().'/thumb_document/'.$this->document_file_name.'.png';
-        $thumb = new Imagick($file_name . '[0]');
+        $this->document_thumb_name = $this->getUploadRootDir().'/thumb_document/'.$this->get_document_path_name().'.png';
+        $thumb = new \Imagick($file_name . '[0]');
         $thumb->thumbnailImage(150, 200);
         $thumb->setImageFormat('png');
         $thumb->writeImage($this->document_thumb_name);
@@ -177,8 +189,13 @@ class Document
             return;
         }
         
-        $this->document_pdf_name = $this->file->getClientOriginalName();
-        $this->document_ex = $this->file->guessExtension();
+        $this->set_document_path_name($this->file->getClientOriginalName());        
+
+        $this->document_pdf_name = $this->getUploadDir().'/'.$this->get_document_path_name();
+        $this->document_file_name = $this->document_pdf_name;
+        $this->document_thumb_name = $this->getUploadDir().'/thumb_document/'.$this->get_document_path_name().'.png';
+        $this->document_number_of_page = 1;
+        $this->document_ext = $this->file->guessExtension();
         $this->document_type = $this->file->getMimeType();
         $this->document_size = $this->file->getClientSize();
     }
@@ -194,18 +211,17 @@ class Document
             return;
         }
 
-        $this->document_file_name = $this->file->getClientOriginalName();
         // If there is a old file, remove it
         if ($this->temp_file_name !== null) {
-            $old_file = $this->getUploadRootDir().'/'.$this->document_id.'-'.$this->temp_file_name;
+            $old_file = $this->getUploadRootDir().'/'.$this->get_file_path_name();
             if (file_exists($old_file)) {
                 unlink($old_file);
             }
         }
 
-        $this->file->move($this->getUploadRootDir(), $this->document_id.'-'.$this->document_file_name); 
-        $this->get_thumb($this->getUploadRootDir().'/'.$this->document_id.'-'.$this->document_file_name);
-        $this->document_number_of_page = $this->get_number_of_pages($this->getUploadRootDir().'/'.$this->document_id.'-'.$this->document_file_name);
+        $this->file->move($this->getUploadRootDir(), $this->get_document_path_name()); 
+        $this->get_thumb($this->getUploadRootDir().'/'.$this->get_document_path_name());
+        $this->document_number_of_page = $this->get_number_of_pages($this->getUploadRootDir().'/'.$this->get_document_path_name());
 
     } 
 
@@ -214,7 +230,7 @@ class Document
      *  @ORM\PreRemove()
      */
     public function preRemoveUpload() {
-        $this->temp_file_name = $this->getUploadRootDir().'/'.$this->document_id.'-'.$this->document_file_name;
+        $this->temp_file_name = $this->getUploadRootDir().'/'.$this->get_file_path_name();
 
     }
 
@@ -226,6 +242,16 @@ class Document
         if (file_exists($this->temp_file_name)) {
             unlink($this->temp_file_name);
         }
+    }
+   
+    public function set_document_path_name($doc_client_name) {
+
+        $this->document_path_name = rand(0, 9999999).'_'.sha1(uniqid(mt_rand(), true)).'_'.$doc_client_name;
+        return $this;
+    }
+
+    public function get_document_path_name() {
+        return $this->document_path_name;
     }
 
 
@@ -243,7 +269,7 @@ class Document
 
     public function getWebPath() {
 
-        return $this->getUploadDir().'/'.$this->document_id.'-'.$this->get_document_file_name();
+        return $this->getUploadDir().'/'.$this->file_path_name;
     }
 
 

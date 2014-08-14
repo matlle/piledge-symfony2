@@ -28,11 +28,17 @@
              </div>
 
              <div>
+            
+             <span style="color: red;">{{ form_errors(form) }}</span>
 
-             {{ form_errors(form) }}
 
              <div class="control-group"> 
-                 <div style="color: red; margin-left: 200px;">{# form.doc_file_name.errors #}</div>
+                 <div style="color: red; margin-left: 200px; width: 500px;">
+                     {{ form_errors(form) }}
+                     {% for error in errors %}
+                         <li>{{ error.message }}</li>
+                     {% endfor %}
+                 </div>
                  <label class="control-label" for="piledge_documentbundle_document_file">Select a document: </label>
                  <div class="controls">
                      {{ form_widget(form.file) }}
