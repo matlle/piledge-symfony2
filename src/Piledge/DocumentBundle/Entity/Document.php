@@ -138,7 +138,7 @@ class Document
     
     protected function get_thumb($file_name) {
         
-        $this->document_thumb_name = $this->getUploadRootDir().'/thumb_document/'.$this->get_document_path_name().'.png';
+        $this->document_thumb_name = $this->getUploadDir().'/thumb_document/'.$this->get_document_path_name().'.png';
         $thumb = new \Imagick($file_name . '[0]');
         $thumb->thumbnailImage(150, 200);
         $thumb->setImageFormat('png');
@@ -146,7 +146,7 @@ class Document
     }
 
 
-    protected function get_number_of_pages($document)  {
+    public function get_number_of_pages($document)  {
 
         $cmd = "/usr/bin/pdfinfo";          // Linux
         //$cmd = "C:\\location\\pdfinfo.exe"; // Windows
@@ -189,22 +189,30 @@ class Document
             return;
         }
         
-        $this->set_document_path_name($this->file->getClientOriginalName());        
-
-        $this->document_pdf_name = $this->getUploadDir().'/'.$this->get_document_path_name();
-        $this->document_file_name = $this->document_pdf_name;
-        $this->document_thumb_name = $this->getUploadDir().'/thumb_document/'.$this->get_document_path_name().'.png';
-        $this->document_number_of_page = 1;
+        $this->set_document_path_name($this->file->guessExtension()); 
         $this->document_ext = $this->file->guessExtension();
         $this->document_type = $this->file->getMimeType();
         $this->document_size = $this->file->getClientSize();
+
+        try {
+
+            $this->upload();
+
+        } catch(Exception $e) {
+          return;
+        }
+
+        $this->document_pdf_name = $this->getUploadDir().'/'.$this->document_path_name;
+        $this->document_file_name = $this->document_pdf_name;
     }
 
 
-    /**
-     * @ORM\PostPersist()
-     * @ORM\PostUpdate()
-     */
+    
+     // @ORM\PostPersist()
+     // @ORM\PostUpdate()
+     
+  
+
     public function upload() {
 
         if ($this->file === null) {
@@ -213,7 +221,7 @@ class Document
 
         // If there is a old file, remove it
         if ($this->temp_file_name !== null) {
-            $old_file = $this->getUploadRootDir().'/'.$this->get_file_path_name();
+            $old_file = $this->getUploadRootDir().'/'.$this->get_document_path_name();
             if (file_exists($old_file)) {
                 unlink($old_file);
             }
@@ -230,7 +238,7 @@ class Document
      *  @ORM\PreRemove()
      */
     public function preRemoveUpload() {
-        $this->temp_file_name = $this->getUploadRootDir().'/'.$this->get_file_path_name();
+        $this->temp_file_name = $this->getUploadRootDir().'/'.$this->get_document_path_name();
 
     }
 
@@ -244,9 +252,9 @@ class Document
         }
     }
    
-    public function set_document_path_name($doc_client_name) {
+    public function set_document_path_name($doc_ext) {
 
-        $this->document_path_name = rand(0, 9999999).'_'.sha1(uniqid(mt_rand(), true)).'_'.$doc_client_name;
+        $this->document_path_name = rand(0, 9999999).'_'.sha1(uniqid(mt_rand(), true)).'.'.$doc_ext;
         return $this;
     }
 

@@ -27,7 +27,14 @@ class DocumentController extends Controller
             $form->bind($request);
             $errors = $validator->validate($document);
 
+
             if ($form->isValid()) {
+
+                /*if (count($errors) == 0) {
+                    $document->upload();
+                    $document->setDocumentNumberOfPage($document->get_number_of_page($document->getDocumentFileName));
+                }*/
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($document);
                 $em->flush();
