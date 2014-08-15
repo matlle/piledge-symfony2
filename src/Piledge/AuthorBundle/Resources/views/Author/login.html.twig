@@ -1,0 +1,15 @@
+<html>
+    <body>
+        {% if error %}
+            {{ error.message }}
+        {% endif %}
+
+    <form action="{{ path('login_check') }}" method="post">
+        <label for="username">Login :</label>
+        <input type="text" id="username" name="_username" value="{{ last_username }}" /><br/>
+        <label for="password">Password :</label>
+        <input type="password" id="password" name="_password" /><br/>
+        <input type="submit" value="Connexion" />
+   </form>
+    </body>
+</html>

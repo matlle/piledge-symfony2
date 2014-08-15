@@ -277,7 +277,7 @@ class Document
 
     public function getWebPath() {
 
-        return $this->getUploadDir().'/'.$this->file_path_name;
+        return $this->getUploadDir().'/'.$this->document_path_name;
     }
 
 

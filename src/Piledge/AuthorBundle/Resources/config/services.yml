@@ -1,0 +1,7 @@
+parameters:
+#    piledge_author.example.class: Piledge\AuthorBundle\Example
+
+services:
+#    piledge_author.example:
+#        class: %piledge_author.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

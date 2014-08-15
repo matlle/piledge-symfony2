@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Piledge\GleBundle\PiledgeGleBundle(),
             new Piledge\DocumentBundle\PiledgeDocumentBundle(),
+            new Piledge\AuthorBundle\PiledgeAuthorBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

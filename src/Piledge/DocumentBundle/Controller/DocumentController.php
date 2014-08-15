@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Piledge\DocumentBundle\Entity\Document;
 use Piledge\DocumentBundle\Form\DocumentType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class DocumentController extends Controller
 {
@@ -14,7 +15,10 @@ class DocumentController extends Controller
         return $this->render('PiledgeDocumentBundle:Document:show.html.twig', array('name' => $id));
     }
 
-
+  
+    /*
+     * @Security("has_role('ROLE_AUTHOR')")
+     */
     public function uploadAction() {
 
         $document = new Document;
