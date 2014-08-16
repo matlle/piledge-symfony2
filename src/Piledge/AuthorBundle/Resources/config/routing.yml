@@ -1,9 +1,13 @@
 login:
     pattern:  /signin
-    defaults: { _controller: PiledgeAuthorBundle:Security:login }
+    defaults: { _controller: PiledgeAuthorBundle:Author:login }
 
 login_check:
     pattern:  /login_check
 
 logout:
-    pattern:  /logout
+    pattern:  /signout
+
+piledgeAuthor_signup:
+    pattern:  /Signup
+    defaults: { _controller: PiledgeAuthorBundle:Author:signup }

@@ -14,7 +14,7 @@ security:
                     user:  { password: userpass, roles: [ 'ROLE_USER' ] }
                     admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
         from_bb:
-            entity: { class: Piledge\AuthorBundle\Entity\Author, property: author_username}
+            entity: { class: Piledge\AuthorBundle\Entity\Author, property: author_email}
 
     firewalls:
         dev:
@@ -27,6 +27,8 @@ security:
             form_login:
                 login_path: login
                 check_path: login_check
+                username_parameter: aemail
+                username_parameter: apassword
             logout:
                 path: logout
                 target: /
