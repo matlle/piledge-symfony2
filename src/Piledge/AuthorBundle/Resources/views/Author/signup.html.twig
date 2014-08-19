@@ -1,14 +1,2 @@
-<html>
-    <body>
-        
-        {% if errors %}
-            {{ errors.message }}
-        {% endif %}
+{% include "PiledgeAuthorBundle:Author:formr.html.twig" %}
 
-        <form action="{{ path('piledgeAuthor_signup') }}" method="post" {{ form_enctype(form) }}>
-            {{ form_widget(form) }}
-
-            <input type="submit" />
-        </form>
-    </body>
-</html>

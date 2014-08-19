@@ -21,7 +21,8 @@ class AuthorType extends AbstractType
                 'first_name'  => 'password',
                 'second_name' => 'confirm',
                 'type'        => 'password',
-            ));
+                'invalid_message' => 'The password confirmation doesn\'t match this password',
+                ));
         ;
     }
     
@@ -31,7 +32,7 @@ class AuthorType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Piledge\AuthorBundle\Entity\Author'
+            'data_class' => 'Piledge\AuthorBundle\Entity\Author',
         ));
     }
 

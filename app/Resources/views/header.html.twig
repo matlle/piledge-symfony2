@@ -2,21 +2,20 @@
     <div class="navbar-inner">
         <ul class="nav" id="nv">
           
-          {% if 0 %}
-          {# if is_granted('IS_AUTHENTICATED_REMEMBERED') #}
+          {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
           <!--  <li> <div class="not"> <a href="#"><img src="Public/img/53.png"></a> </div> </li>  -->        
                 <li> 
-                      <div class="mess"> <a href="msg.php" style="color:"><img src="Public/img/7.png"><span class="badge badge-info">{% if msg_unread.count  > 0 %}{{ msg_unread.count }} {% endif %}</span></a>
+                      <div class="mess"> <a href="msg.php" style="color:"><img src="{{ asset('img/7.png') }}"><span class="badge badge-info">{% if -1  > 0 %}{{ msg_unread.count }} {% endif %}</span></a>
                       </div> 
                 </li>
                     
-               <li><a href="myactivities.php?username={{ author.author_pseudo }}"> 
-                   {% if not author.avatar_22x22 %}
-                       <img src="Public/img/default.png" style="height: 22px; width: 22px;" />
+               <li><a href="{{ path('piledgeAuthor_feed', {'username': app.user.getAuthorUsername }) }}">
+                   {% if not 0 %}
+                       <img src="{{ asset('img/default.png') }}" style="height: 22px; width: 22px;" />
                    {% else %}
                        <img src="{{ author.avatar_22x22 }}" style="height: 22px; width: 22px;" />
                    {% endif %}
-                   <strong> {{ author.author_pseudo }} </strong></a>
+                   <strong>{{ app.user.getAuthorUsername }}</strong></a>
                </li>
             <li>
                   <div class="dropdown">
@@ -26,9 +25,9 @@
                                <div class="submenu">
                                     <ul class="root">
                                     <li ><a href="#Dashboard" >Dashboard</a></li>
-                                    <li ><a href="profile.php?username={{ author.author_pseudo }}" >Profile</a></li>
+                                    <li ><a href="{{ path('piledgeAuthor_profile', {'username': app.user.getAuthorUsername }) }}" >Profile</a></li>
                                     <li ><a href="#settings">Settings</a></li>
-                                    <li ><a href="logout.php">Logout</a></li>
+                                    <li ><a href="{{ path('login') }}">Logout</a></li>
                                     </ul>
                                </div>
 
@@ -39,13 +38,13 @@
 
           {% else %}
 
-              <li style="margin-right: 200px;"><a href="login.php"><strong>Login</strong></a></li>
+              <li style="margin-right: 200px;"><a href="{{ path('login') }}"><strong>Login</strong></a></li>
 
           {% endif %}
         </ul>
          
         <ul class="nav" id="logo">
-          <li><a href="{{ path('piledgeGle_homepage') }}"><strong>logo</strong></a></li>
+          <li><a href="{{ path('piledgeGle_homepage') }}"><img src="{{ asset('img/4.gif') }}" style="height: 15px; width: 30px;"></a></li>
         </ul>
 
         <ul class="nav" id="sefie">

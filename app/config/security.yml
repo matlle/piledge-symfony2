@@ -28,7 +28,7 @@ security:
                 login_path: login
                 check_path: login_check
                 username_parameter: aemail
-                username_parameter: apassword
+                password_parameter: apassword
             logout:
                 path: logout
                 target: /

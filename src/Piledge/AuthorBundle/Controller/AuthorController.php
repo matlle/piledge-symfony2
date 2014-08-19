@@ -3,6 +3,7 @@
 namespace Piledge\AuthorBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContext;
 
 use Piledge\AuthorBundle\Entity\Signup;
@@ -47,8 +48,6 @@ class AuthorController extends Controller {
         $form = $this->createForm(new SignupType, $signup);
         
         $request = $this->get('request');
-        $validator = $this->get('validator');
-        $errors = '';
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
@@ -58,8 +57,6 @@ class AuthorController extends Controller {
             $encoder = $factory->getEncoder($author);
             $password = $encoder->encodePassword($signup->getAuthor()->getAuthorPassword(), $signup->getAuthor()->getAuthorSalt());
             $signup->getAuthor()->setAuthorPassword($password);
-
-            $errors = $validator->validate($signup);
 
             if ($form->isValid()) {
 
@@ -71,24 +68,24 @@ class AuthorController extends Controller {
             }
         }
         
-        if (count($errors) > 0) {
-
-            return $this->render('PiledgeAuthorBundle:Author:signup.html.twig', array(
-                'form' => $form->createView(),
-                'errors' => $errors
-            ));
-
-        }else {
-
             return $this->render('PiledgeAuthorBundle:Author:signup.html.twig', array(
                    'form' => $form->createView()
                   ));
-        }
 
     }
 
+   
 
-    
+    public function feedAction($username) {
+        return new Response("New author's feed!");
+    }
+
+
+    public function profileAction($username) {
+        return new Response("Author's profile!");
+    }
+
+
     public function restorePasswordAction() {
     }
 

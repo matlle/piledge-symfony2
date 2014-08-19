@@ -15,6 +15,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @ORM\Table(name="author")
  * @ORM\Entity(repositoryClass="Piledge\AuthorBundle\Entity\AuthorRepository")
+ * @UniqueEntity(fields="author_username", message="This username is already taken. Try again please")
+ * @UniqueEntity(fields="author_email", message="This email is already taken. Try again please")
  * @ORM\HasLifecycleCallbacks()
  */
 class Author implements UserInterface
@@ -51,7 +53,11 @@ class Author implements UserInterface
      *
      * @ORM\Column(name="author_password", type="string", length=255)
      * @Assert\NotBlank()
-     * @Assert\Length(min=6, max=4000)
+     * @Assert\Length(
+     *     min=6,
+     *     max=18,
+     *     minMessage="This password is too short. It should have {{ limit }} characters or more.",
+     *     maxMessage="This value is too long. It should have {{ limit }} characters or least.")
      */
     private $author_password;
 
@@ -76,7 +82,7 @@ class Author implements UserInterface
     public function __construct() {
 
         $this->author_roles = array('ROLE_AUTHOR');
-        $this->author_salt = '12$w/aHvnC/';
+        $this->author_salt = md5(uniqid(null, true));
     }
 
 

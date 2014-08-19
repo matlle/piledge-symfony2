@@ -16,11 +16,11 @@ class DocumentController extends Controller
     }
 
   
-    /*
+    /**
      * @Security("has_role('ROLE_AUTHOR')")
      */
     public function uploadAction() {
-
+        
         $document = new Document;
         $form = $this->createForm(new DocumentType, $document);
 
