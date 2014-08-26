@@ -77,12 +77,30 @@ class Author implements UserInterface
      */
     private $author_roles;
 
+    /**
+     * @var datetime
+     *
+     * @ORM\Column(name="author_created_at", type="datetime")
+     * @Assert\NotBlank()
+     */
+    private $author_created_at;
+
+    /**
+     * @var datetime
+     *
+     * @ORM\Column(name="author_updated_at", type="datetime")
+     * @Assert\NotBlank()
+     */
+    private $author_updated_at;
+
 
 
     public function __construct() {
 
         $this->author_roles = array('ROLE_AUTHOR');
         $this->author_salt = md5(uniqid(null, true));
+        $this->author_created_at = new \Datetime();
+        $this->author_updated_at = new \Datetime();
     }
 
 
@@ -266,5 +284,51 @@ class Author implements UserInterface
     public function getAuthorRoles()
     {
         return $this->author_roles;
+    }
+
+    /**
+     * Set author_created_at
+     *
+     * @param \DateTime $authorCreatedAt
+     * @return Author
+     */
+    public function setAuthorCreatedAt($authorCreatedAt)
+    {
+        $this->author_created_at = $authorCreatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get author_created_at
+     *
+     * @return \DateTime 
+     */
+    public function getAuthorCreatedAt()
+    {
+        return $this->author_created_at;
+    }
+
+    /**
+     * Set author_updated_at
+     *
+     * @param \DateTime $authorUpdatedAt
+     * @return Author
+     */
+    public function setAuthorUpdatedAt($authorUpdatedAt)
+    {
+        $this->author_updated_at = $authorUpdatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get author_updated_at
+     *
+     * @return \DateTime 
+     */
+    public function getAuthorUpdatedAt()
+    {
+        return $this->author_updated_at;
     }
 }

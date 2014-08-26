@@ -13,20 +13,20 @@
                
               <div  class="current-avatar" style="margin-left: 15px; margin-top: 10px;"> 
 
-                  {% if 0%}
+                  {% if 0 %}
                      <a href="myactivities.php?username="><img src="" alt="Avatar" style="width: 50px; height: 50px;" /></a>
                   {% else %}
-                     <a href="myactivities.php?username="><img src="Public/img/default.png" alt="Avatar" style="width: 50px; height: 50px;"/></a>
+                     <a href="myactivities.php?username="><img src="{{ asset('img/default.png') }}" alt="Avatar" style="width: 50px; height: 50px;"/></a>
                        
                   {% endif %}
                         
-              <span style="float: right;"> {# ago(r.file_created_at) #} </span> </div>
+              <span style="float: right;"> {{ d.document_created_at|date('d/m/y') }} </span> </div>
               
               <table>
                  <tr>   
                     <td>
                     <div class="current-thumb">
-                        <span style="margin-left: 0px; margin-bottom: -80px;"> <strong> <a href="myactivities.php?username="></a> </strong> </span> <br/>
+                        <span style="margin-left: 0px; margin-bottom: -80px;"><strong><a href="{{ path('piledgeAuthor_feed', {'username': d.author.author_username}) }}"></a>{{ d.author.author_username }}</strong> </span> <br/>
                         <a href="{{ path('piledgeDocument_show', {'id': d.document_id}) }}"><img src="{{ asset(d.document_thumb_name) }}" title="{{ d.document_title }}" alt="{{ d.document_title }}" style="border: 1px solid #F5F5F5;" /></a> 
                     </div>  
                     </td>
@@ -49,7 +49,7 @@
 
 
 
-                <div class="current-avatar" style="margin-left: 20px;"> Avatar <span style="float: right;"> {# ago(r.file_created_at) #} </span> </div>
+                <div class="current-avatar" style="margin-left: 20px;"> Avatar <span style="float: right;">{{ d.document_created_at }}</span></div>
                
                 <table>
                     <tr>

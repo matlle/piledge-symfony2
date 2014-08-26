@@ -13,7 +13,7 @@ piledgeAuthor_signup:
     defaults: { _controller: PiledgeAuthorBundle:Author:signup }
 
 piledgeAuthor_feed:
-    pattern: /{username}
+    pattern: /user/{username}
     defaults: { _controller: PiledgeAuthorBundle:Author:feed }
     requirements:
         username: \w+

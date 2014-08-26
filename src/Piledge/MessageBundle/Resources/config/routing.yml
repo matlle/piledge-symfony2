@@ -1,0 +1,3 @@
+piledge_message_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: PiledgeMessageBundle:Default:index }

@@ -3,6 +3,7 @@
 namespace Piledge\DocumentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Piledge\DocumentBundle\Entity\Document;
 use Piledge\DocumentBundle\Form\DocumentType;
 
@@ -12,8 +13,25 @@ class DocumentController extends Controller
 {
     public function showAction($id)
     {
-        return $this->render('PiledgeDocumentBundle:Document:show.html.twig', array('name' => $id));
+        $repdoc = $this->getDoctrine()
+                         ->getManager()
+                         ->getRepository('PiledgeDocumentBundle:Document');
+
+        $document = $repdoc->findOneByAuthor($id);
+
+        $doc_data = [];
+        
+        foreach($document as $doc) {
+            $doc_data = $doc;
+        }
+
+        //return new Response("The result is: ".print_r($document));
+
+        return $this->render('PiledgeDocumentBundle:Document:show.html.twig', array(
+                 'doc' => $doc_data
+        ));
     }
+
 
   
     /**
@@ -33,8 +51,11 @@ class DocumentController extends Controller
 
 
             if ($form->isValid()) {
+                
+                $user = $this->getUser();
 
                 $em = $this->getDoctrine()->getManager();
+                $document->setAuthor($user);
                 $em->persist($document);
                 $em->flush();
 

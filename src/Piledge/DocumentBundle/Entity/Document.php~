@@ -27,7 +27,7 @@ class Document
     
     /**
      * @ORM\ManyToOne(targetEntity="Piledge\AuthorBundle\Entity\Author")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="author_id", nullable=false)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
@@ -571,27 +571,4 @@ class Document
     }
 
 
-
-    /**
-     * Set author
-     *
-     * @param \Piledge\AuthorBundle\Entity\Author $author
-     * @return Document
-     */
-    public function setAuthor(\Piledge\AuthorBundle\Entity\Author $author)
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    /**
-     * Get author
-     *
-     * @return \Piledge\AuthorBundle\Entity\Author 
-     */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
 }
