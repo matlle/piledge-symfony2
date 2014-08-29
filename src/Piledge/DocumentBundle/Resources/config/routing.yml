@@ -1,21 +1,28 @@
 piledgeDocument_show:
-    path:     /d/{id}
+    path:     /d/{doc_id}
     defaults: { _controller: PiledgeDocumentBundle:Document:show }
     requirements:
-        id: \d+
+        doc_id: \d+
 
 piledgeDocument_upload:
     path:     /upload
     defaults: { _controller: PiledgeDocumentBundle:Document:upload }
+
+
+piledgeDocument_download:
+    path:   /download/{doc_name}
+    defaults: { _controller: PiledgeDocumentBundle:Document:download }
+    requirements:
+        doc_name: \w+
  
 piledgeDocument_update:
-    path:     /d/update/{id}
+    path:     /d/update/{doc_id}
     defaults: { _controller: PiledgeDocumentBundle:Document:update }
     requirements:
-        id: \d+
+        doc_id: \d+
 
 piledgeDocument_remove:
     path:     /d/remove/{id}
     defaults: { _controller: PiledgeDocumentBundle:Document:remove }
     requirements:
-        id: \d+
+        doc_id: \d+

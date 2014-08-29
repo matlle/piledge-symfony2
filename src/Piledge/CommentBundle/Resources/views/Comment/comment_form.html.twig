@@ -1,0 +1,32 @@
+<hr/>
+
+       <div style="color: red; float: left; margin-left: 60px;">
+           {{ form_errors(comment_form) }}
+           {% for error in errors %}
+               {{ error.message }}
+           {% endfor %}
+       </div>
+<div class="comment-form">
+
+    <a href="#">
+        {% if 0 %}
+            <img src="{{ "Author avatar" }}" style="float: left; width: 50px; height: 50px;">
+        {% else %}
+            <img src="{{ asset('img/default.png') }}" style="float: left; width: 50px; height: 50px;">
+        {% endif %}
+     </a>
+       
+    
+       <form accept-charset="UTF-8" action="{{ path('piledgeComment_add', {'doc_id': doc.document_id }) }}" method="post" style="margin-right: 2px;"> 
+
+            {{ form_widget(comment_form.comment_body, {'attr': {'placeholder': 'Comment...'}}) }}
+
+            {{ form_rest(comment_form) }}
+
+            <div class="comment-submit-button">
+                <button type="submit" name="submit" class="btn" style="margin-left: 360px;">Comment</button>
+            </div>
+
+       </form> 
+
+</div>

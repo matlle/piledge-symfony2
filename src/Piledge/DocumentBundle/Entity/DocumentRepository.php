@@ -23,13 +23,13 @@ class DocumentRepository extends EntityRepository {
     }
 
 
-    public function findOneByAuthor($id) {
+    public function findOneByAuthor($doc_id) {
 
         $qb = $this->createQueryBuilder('d')
                    ->join('d.author', 'a')
                    ->addSelect('a')
                    ->where('d.document_id = :id')
-                   ->setParameter('id', $id);
+                   ->setParameter('id', $doc_id);
 
         return $qb->getQuery()->getArrayResult();
    }

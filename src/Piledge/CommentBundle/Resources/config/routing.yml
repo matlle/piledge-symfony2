@@ -1,3 +1,6 @@
-piledge_comment_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: PiledgeCommentBundle:Default:index }
+piledgeComment_add:
+    path:     /c/add/{doc_id}
+    defaults: { _controller: PiledgeCommentBundle:Comment:add }
+    methods: POST
+    requirements:
+        doc_id: \d+

@@ -4,20 +4,27 @@ namespace Piledge\DocumentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+
 use Piledge\DocumentBundle\Entity\Document;
+use Piledge\CommentBundle\Entity\Comment;
+
+use Symfony\Component\Form\Form;
 use Piledge\DocumentBundle\Form\DocumentType;
+use Piledge\CommentBundle\Form\CommentType;
+
+use JMS\SecurityExtraBundle\Annotation\Secure;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class DocumentController extends Controller
 {
-    public function showAction($id)
+    public function showAction($doc_id, Form $comment_form = null, $errors = '')
     {
         $repdoc = $this->getDoctrine()
                          ->getManager()
                          ->getRepository('PiledgeDocumentBundle:Document');
 
-        $document = $repdoc->findOneByAuthor($id);
+        $document = $repdoc->findOneByAuthor($doc_id);
 
         $doc_data = [];
         
@@ -25,10 +32,24 @@ class DocumentController extends Controller
             $doc_data = $doc;
         }
 
+        
+        if ($comment_form === null) {
+            $comment = new Comment;
+            $comment_form = $this->createForm(new CommentType, $comment);
+        }
+
+        if (count($errors) == 0) {
+            $errors = '';
+        }
+
+
         //return new Response("The result is: ".print_r($document));
 
         return $this->render('PiledgeDocumentBundle:Document:show.html.twig', array(
-                 'doc' => $doc_data
+            'doc' => $doc_data,
+            'comment_form' => $comment_form->createView(),
+            'errors' => $errors
+
         ));
     }
 
@@ -79,7 +100,33 @@ class DocumentController extends Controller
 
     }
 
-    
+
+
+    public function downloadAction($doc_name) {
+
+         /*$fichier = "nomFichier.pdf";
+            $chemin = "bundles/nomBundle/.../"; // emplacement de votre fichier .pdf
+                  
+            $response = new Response();
+               $response->setContent(file_get_contents($chemin.$fichier));
+               $response->headers->set('Content-Type', 'application/force-download'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
+                  $response->headers->set('Content-disposition', 'filename='. $fichier);
+                        
+               return $response;*/
+
+
+   /*return new Response('', 200, array(
+           'X-Sendfile'          => $filename,
+               'Content-type'        => 'application/octet-stream',
+                   'Content-Disposition' => sprintf('attachment; filename="%s"', $filename))
+               ));*/
+
+
+        //return new Response("");
+    }
+
+
+
     public function updateAction($id)
     {
         return $this->render('PiledgeDocumentBundle:Document:update.html.twig', array('name' => $id));

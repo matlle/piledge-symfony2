@@ -1,3 +1,7 @@
+piledge_comment:
+    resource: "@PiledgeCommentBundle/Resources/config/routing.yml"
+    prefix:   /
+
 piledge_author:
     resource: "@PiledgeAuthorBundle/Resources/config/routing.yml"
     prefix:   /
