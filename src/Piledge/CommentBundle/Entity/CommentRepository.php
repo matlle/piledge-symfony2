@@ -12,4 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class CommentRepository extends EntityRepository
 {
+    public function findAllByAuthorAndDocument($doc_id) {
+
+        $qb = $this->createQueryBuilder('c')
+                   ->join('c.author', 'a')
+                   ->join('c.document', 'd')
+                   ->addSelect('a')
+                   ->addSelect('d')
+                   ->Where('d.document_id = :doc_id')
+                   ->setParameter('doc_id', $doc_id)
+                   ->orderBy('c.comment_created_at', 'DESC');
+
+        return $qb->getQuery()->getArrayResult();
+
+    }
 }

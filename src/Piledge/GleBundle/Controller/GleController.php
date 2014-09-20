@@ -11,14 +11,14 @@ use Piledge\DocumentBundle\Entity\Document;
 
 class GleController extends Controller
 {
-    public function indexAction() {
+    public function mainAction() {
 
         $doc_repo = $this->getDoctrine()
                           ->getManager()
                           ->getRepository('PiledgeDocumentBundle:Document');
         $documents = $doc_repo->findByDateDesc(); 
 
-        return $this->render('PiledgeGleBundle:Gle:index.html.twig', array(
+        return $this->render('PiledgeGleBundle:Gle:main.html.twig', array(
                      'documents' => $documents
                  ));
     }

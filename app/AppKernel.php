@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Piledge\DocumentBundle\PiledgeDocumentBundle(),
             new Piledge\AuthorBundle\PiledgeAuthorBundle(),
             new Piledge\CommentBundle\PiledgeCommentBundle(),
+            new Piledge\MessageBundle\PiledgeMessageBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -1,11 +1,10 @@
-<hr/>
+<div style="color: red; float: left; margin-left: 60px;">
+       {{ form_errors(comment_form) }}
+       {% for error in errors %}
+           {{ error.message }}
+       {% endfor %}
+</div>
 
-       <div style="color: red; float: left; margin-left: 60px;">
-           {{ form_errors(comment_form) }}
-           {% for error in errors %}
-               {{ error.message }}
-           {% endfor %}
-       </div>
 <div class="comment-form">
 
     <a href="#">
@@ -17,7 +16,7 @@
      </a>
        
     
-       <form accept-charset="UTF-8" action="{{ path('piledgeComment_add', {'doc_id': doc.document_id }) }}" method="post" style="margin-right: 2px;"> 
+       <form accept-charset="UTF-8" action="{{ path('piledgeComment_add', {'doc_id': doc.document_id }) }}" method="post"> 
 
             {{ form_widget(comment_form.comment_body, {'attr': {'placeholder': 'Comment...'}}) }}
 
@@ -30,3 +29,4 @@
        </form> 
 
 </div>
+

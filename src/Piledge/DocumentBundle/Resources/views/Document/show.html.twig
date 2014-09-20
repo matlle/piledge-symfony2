@@ -41,10 +41,13 @@
 
   #}
 
- 
+ <hr/> 
  {% if is_granted('ROLE_AUTHOR') %}
     
-      {# {% include 'file/list_comments.html' %} #}
+      {%if coms %}
+          {% include 'PiledgeCommentBundle:Comment:list_comments.html.twig' %}
+      {% endif %}
+
       {% include "PiledgeCommentBundle:Comment:comment_form.html.twig" %} <br/><br/> 
 
  {% endif %}

@@ -1,0 +1,17 @@
+<div class="comment-list{{ doc.document_id }} clis" >
+        
+            {% for c in coms %}
+                {% if c.comment_body %}
+                   {# {% if not c.avatar_30x30 %} #}
+                   {% if 0 %} 
+                        <img src="{{ "c.avatar_30x30" }}" style="width: 30px; height: 30px;">
+                   {% else %}
+                       <a href="{{ path('piledgeAuthor_feed', {'username': c.author.author_username }) }}"><img src="{{ asset('img/default.png') }}" style="width: 30px; height: 30px;"></a>
+                   {% endif %}
+                    <strong><a href="{{ path('piledgeAuthor_feed', {'username': c.author.author_username }) }}" style="color: #3b5998;">{{ c.author.author_username }}</a> </strong>
+                    <span>{{ c.comment_body }}</span>
+                    <span style="color: #aaa; float: right;">{{ c.comment_created_at|date('d/m/y') }}</span><hr/>
+               {% endif %}
+            {% endfor %}
+
+</div>

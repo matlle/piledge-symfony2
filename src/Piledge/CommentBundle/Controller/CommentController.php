@@ -20,6 +20,11 @@ class CommentController extends Controller
     public function addAction($doc_id)
     {
 
+        $author = $this->getDoctrine()
+                       ->getManager()
+                       ->getRepository('PiledgeDocumentBundle:Document')
+                       ->find($doc_id);
+
         $comment = new Comment;
         $form = $this->createForm(new CommentType, $comment);
         $request = $this->get('request');
@@ -29,8 +34,10 @@ class CommentController extends Controller
         $errors = $validator->validate($comment);
 
         if ($form->isValid()) {
-            //$user = $this->getUser();
+            $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
+            $comment->setAuthor($user);
+            $comment->setDocument($author);
             $em->persist($comment);
             $em->flush();
 

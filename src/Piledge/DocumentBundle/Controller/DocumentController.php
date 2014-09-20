@@ -21,10 +21,15 @@ class DocumentController extends Controller
     public function showAction($doc_id, Form $comment_form = null, $errors = '')
     {
         $repdoc = $this->getDoctrine()
-                         ->getManager()
-                         ->getRepository('PiledgeDocumentBundle:Document');
+                       ->getManager()
+                       ->getRepository('PiledgeDocumentBundle:Document');
 
         $document = $repdoc->findOneByAuthor($doc_id);
+
+        $comments = $this->getDoctrine()
+                         ->getManager()
+                         ->getRepository('PiledgeCommentBundle:Comment')
+                         ->findAllByAuthorAndDocument($doc_id);
 
         $doc_data = [];
         
@@ -47,6 +52,7 @@ class DocumentController extends Controller
 
         return $this->render('PiledgeDocumentBundle:Document:show.html.twig', array(
             'doc' => $doc_data,
+            'coms' => $comments,
             'comment_form' => $comment_form->createView(),
             'errors' => $errors
 

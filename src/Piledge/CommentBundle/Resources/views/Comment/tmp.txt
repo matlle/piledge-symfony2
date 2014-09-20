@@ -1,0 +1,21 @@
+{#
+<div class="comment-list" id="{# tc{{ f.file_id }} #}">
+        {# {% for c in twoc %} #}
+        {% for c in coms %}
+            {% if c.comment_body %}
+                {# {% if not c.avatar_30x30 %} #}
+                {% if 0 %} 
+                    <img src="Public/img/default.png" style="width: 30px; height: 30px;">
+                {% else %}
+                   <img src="{{ "c.avatar_30x30" }}" style="width: 30px; height: 30px;">
+                {% endif %}
+                <strong> <a href="myactivities.php?username={{ "c.author_pseudo" }}" style="color: #3b5998;">{{ c.author.author_username }}</a></strong>
+                <span>{{ c.comment_body }}</span> 
+                <span style="color: #aaa; float: right;">{{ c.comment_created_at|date('d/m/y') }}</span>
+                <hr/>
+       
+            {% endif %}
+         {% endfor %}
+
+</div>
+  #}
