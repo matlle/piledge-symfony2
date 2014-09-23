@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "PiledgeMessageBundle::layout.html.twig" %}
 
 {% block left_menu %} 
    
@@ -10,8 +10,8 @@
                     <li><a href="nmsg.php"><i class=""></i>News Message</a></li>
                     <li class="active">
                         <a href="msg.php">
-                            <i class=""></i>Inbox 
-                            <span class="badge badge-info" style="float: right;">{% if msg_unread.count > 0 %} {{ msg_unread.count }} {% endif %}</span>
+                            <i class=""></i>Inbox
+                            <span class="badge badge-info" style="float: right;">{% if msg_unread %}{{ msg_unread.count }}{% endif %}</span>
                         </a>
                     </li>
                     <li><a href="sent.php">Sent</a></li>
@@ -30,19 +30,19 @@
          
      {% block msg_zone %}
 
-      {% block msg_header %}  {% include 'msg/msg_header.html'  %} {% endblock %} 
+      {% block msg_header %}  {% include 'PiledgeMessageBundle:Message:msg_header.html.twig'  %} {% endblock %} 
 
-         {% if not inbox %}  
-             {% include 'msg/no_element_error.html' %}
+         {% if not inbox_msg %}  
+             {% include 'PiledgeMessageBundle:Message:no_element_error.html.twig' %}
          {% else %}
-             {% include 'msg/inbox_list.html' %}
+             {% include 'PiledgeMessageBundle:Message:inbox_list.html.twig' %}
          {% endif %}
 
      {% endblock %}
     
    </div>
    <div style="float: left; margin-left: 280px; margin-top: 5px; margin-bottom: 5px; color: #ccc;">
-    <span style="color: #ccc;"> Copyright (c) 2013 - by <a href="http://www.twitter.com"> MATLLE </a> <a href="#"> Language </a> </span>
+    <span style="color: #ccc;"> Copyright (c) 2013 - by <a href="http://www.twitter.com">MATLLE</a><a href="#">Language</a> </span>
    </div>
 
 {% endblock %}

@@ -5,7 +5,7 @@ namespace Piledge\MessageBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Cnstraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\ExecutionContextInterface;.
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * Message
@@ -55,7 +55,7 @@ class Message
     /**
      * @var integer
      *
-     * @ORM\Column(name="message_is_read", type="integer")
+     * @ORM\Column(name="message_is_read", type="boolean")
      */
     private $message_is_read;
 
@@ -79,6 +79,14 @@ class Message
      * @ORM\Column(name="message_updated_at", type="datetime")
      */
     private $message_updated_at;
+
+
+
+    public function __construct() {
+        $this->message_is_read = false;
+        $this->message_created_at = new \Datetime;
+        $this->message_updated_at = new \Datetime;
+    }
 
 
     /**

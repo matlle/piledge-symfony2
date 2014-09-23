@@ -5,7 +5,7 @@
           {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
           <!--  <li> <div class="not"> <a href="#"><img src="Public/img/53.png"></a> </div> </li>  -->        
                 <li> 
-                      <div class="mess"> <a href="msg.php" style="color:"><img src="{{ asset('img/7.png') }}"><span class="badge badge-info">{% if -1  > 0 %}{{ msg_unread.count }} {% endif %}</span></a>
+                      <div class="mess"><a href="{{ path('piledgeMessage_inbox') }}" style="color:"><img src="{{ asset('img/7.png') }}"><span class="badge badge-info">{% if -1  > 0 %}{{ msg_unread.count }} {% endif %}</span></a>
                       </div> 
                 </li>
                     
