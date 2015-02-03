@@ -6,21 +6,25 @@
   <center> <li style="margin-top: 15px;"><h4>New Message</h4></li> </center>
 
 </ul>
-{% if errors %}
-   {% for er in errors %} 
-       <center> <span style="color: red; background-color: #e8e9ea;">{{ er }}</span> </center>
-   {% endfor %}
-{% endif %}
+       <center> <span style="color: red; background-color: #e8e9ea;">{{ form_errors(form) }}</span> </center>
 <div class="input-prepend">
-    <form enctype="multipart/form-data"  method="post" action="nmsg.php">
-        <input type="hidden" name="ap" value="{{ author.author_pseudo }}">
+    <form enctype="multipart/form-data"  method="post" action="{{ path('piledgeMessage_new') }}">
+        <input type="hidden" name="ap" value="{{ app.user.getAuthorUsername }}">
         <span class="add-on">To</span>
-        <input type="text" name="to" class="span2" id="prependedInput" placeholder="To" value="{% if to_pseudo %}{{ to_pseudo }}{% endif %}" style="height: 30px; width: 670px;"><br/><br/>
+        {# <input type="text" name="to" class="span2" id="prependedInput" placeholder="To" value="{# {% if to_pseudo %}{{ to_pseudo }}{% endif %}" style="height: 30px; width: 670px;"><br/><br/> #}
+
+        {{ form_widget(form.message_receiver_username) }}
 
         <span class="add-on">Subject</span>
-        <input type="text" name="subject" id="prependedInput" placeholder="Subject" value="{% if subject %} {{ subject }} {% else %} No subject {% endif %}" style="width: 625px;"><br/><br/>
+        {# <input type="text" name="subject" id="prependedInput" placeholder="Subject" value="{% if subject %} {{ subject }} {% else %} No subject {% endif %}" style="width: 625px;"><br/><br/> #}
+        
+        {{ form_widget(form.message_subject) }} <br/><br/>
 
-        <textarea name="content" placeholder="Write your message..." style="height: 400px; width: 685px; resize: none;">{% if content %} {{ content }} {% endif %}</textarea>
+        {# <textarea name="content" placeholder="Write your message..." style="height: 400px; width: 685px; resize: none;">{% if content %} {{ content }} {% endif %}</textarea> #}
+
+        {{ form_widget(form.message_content) }}
+
+        {{ form_rest(form) }}
 
        <div>
            <button type="submit"  name="submit" class="btn" style="float: right; margin-right: 50px; width: 100px;">Send</button>

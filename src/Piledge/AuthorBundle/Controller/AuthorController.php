@@ -6,6 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContext;
 
+
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+
+
 use Piledge\AuthorBundle\Entity\Signup;
 use Piledge\AuthorBundle\Entity\Author;
 use Piledge\AuthorBundle\Form\SignupType;
@@ -64,7 +70,21 @@ class AuthorController extends Controller {
                 $em->persist($signup->getAuthor());
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('piledgeGle_homepage'));
+                $repo = $this->getDoctrine()->getRepository("PiledgeAuthorBundle:Author");
+                $user = $repo->findOneByUsername($signup->getAuthor()->getAuthorUsername());
+
+                if(!$user)
+                    throw new UsernameNotFoundException("User not found");
+                else {
+                    $token = new UsernamePasswordToken($user[0], null, "guard", $user[0]->getRoles());
+                    $this->get("security.context")->setToken($token);
+
+                    $request = $this->get("request");
+                    $event = new InteractiveLoginEvent($request, $token);
+                    $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+
+                    return $this->redirect($this->generateUrl('piledgeGle_homepage'));
+                }
             }
         }
         

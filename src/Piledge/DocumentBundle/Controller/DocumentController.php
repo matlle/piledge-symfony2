@@ -16,6 +16,8 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+
+
 class DocumentController extends Controller
 {
     public function showAction($doc_id, Form $comment_form = null, $errors = '')

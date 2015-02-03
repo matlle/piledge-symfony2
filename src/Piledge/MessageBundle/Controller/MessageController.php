@@ -8,6 +8,7 @@ use Symfony\Component\Form\Form;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 
 use Piledge\MessageBundle\Entity\Message;
+use Piledge\MessageBundle\Form\MessageType;
 
 class MessageController extends Controller
 {
@@ -26,4 +27,35 @@ class MessageController extends Controller
                    'inbox_msg' => $inbox_msg
                ));
     }
+
+
+    public function sentAction() {
+    }
+
+
+    public function nmsgAction() {
+
+        $msg = new Message;
+        $form = $this->createForm(new MessageType, $msg);
+
+        $request = $this->get('request');
+
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($msg);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('PiledgeMessage_inbox'));
+            }
+        }
+
+        return $this->render('PiledgeMessageBundle:Message:nmsg.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+
 }

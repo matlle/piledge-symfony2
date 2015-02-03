@@ -191,9 +191,7 @@ class Document
     */
     public function preUpload() {
 
-        if ($this->file === null) {
-            return;
-        }
+        if ($this->file === null) return;
         
         $this->set_document_path_name($this->file->guessExtension()); 
         $this->document_ext = $this->file->guessExtension();

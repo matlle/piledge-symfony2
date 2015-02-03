@@ -1,3 +1,11 @@
 piledgeMessage_inbox:
     path:     /msg
     defaults: { _controller: PiledgeMessageBundle:Message:inbox }
+
+piledgeMessage_sent:
+    path:     /sent
+    defaults: { _controller: PiledgeMessageBundle:Message:sent }
+
+piledgeMessage_new:
+    path:     /nmsg
+    defaults: { _controller: PiledgeMessageBundle:Message:nmsg }

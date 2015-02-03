@@ -12,4 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class AuthorRepository extends EntityRepository
 {
+    public function findOneByUsername($username) {
+        $qb = $this->createQueryBuilder('a');
+        $qb->where('a.author_username = :username')
+            ->setParameter('username', $username);
+
+        return $qb->getQuery()->getResult();
+    }
 }
