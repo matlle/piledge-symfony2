@@ -29,11 +29,16 @@ class MessageController extends Controller
     }
 
 
-    public function sentAction() {
-    }
-
-
+    
     public function nmsgAction() {
+
+        $msg_repo = $this->getDoctrine()
+                         ->getManager()
+                         ->getRepository('PiledgeMessageBundle:Message');
+
+        $msg_unread = $msg_repo->findMsg_unread();
+
+        $inbox_msg = $msg_repo->findAll();
 
         $msg = new Message;
         $form = $this->createForm(new MessageType, $msg);
@@ -53,9 +58,17 @@ class MessageController extends Controller
         }
 
         return $this->render('PiledgeMessageBundle:Message:nmsg.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'msg_unread' => $msg_unread,
+            'inbox_msg' => $inbox_msg
         ));
     }
+
+    
+    public function sentAction() {
+    }
+
+
 
 
 }

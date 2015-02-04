@@ -26,4 +26,19 @@ class CommentRepository extends EntityRepository
         return $qb->getQuery()->getArrayResult();
 
     }
+
+    public function nbByDocument($doc_id) {
+
+        $qb = $this->createQueryBuilder('c')
+                   ->join('c.document', 'd')
+                   ->addSelect('d')
+                   ->Where('d.document_id = :doc_id')
+                   ->setParameter('doc_id', $doc_id);
+
+        return $qb->getQuery()->getSingleResult();
+
+    }
+
+
+
 }
