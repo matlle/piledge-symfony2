@@ -44,9 +44,12 @@ class MessageController extends Controller
         $form = $this->createForm(new MessageType, $msg);
 
         $request = $this->get('request');
+        $validator = $this->get('validator');
+        $errors = '';
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
+            $errors = $validator->validate($msg);
 
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
@@ -57,11 +60,22 @@ class MessageController extends Controller
             }
         }
 
-        return $this->render('PiledgeMessageBundle:Message:nmsg.html.twig', array(
-            'form' => $form->createView(),
-            'msg_unread' => $msg_unread,
-            'inbox_msg' => $inbox_msg
-        ));
+        if(count($errors) > 0) {
+
+            return $this->render('PiledgeMessageBundle:Message:nmsg.html.twig', array(
+                'form' => $form->createView(),
+                'msg_unread' => $msg_unread,
+                'inbox_msg' => $inbox_msg,
+                'errors' => $errors
+            ));
+
+        } else {
+            return $this->render('PiledgeMessageBundle:Message:nmsg.html.twig', array(
+                'form' => $form->createView(),
+                'msg_unread' => $msg_unread,
+                'inbox_msg' => $inbox_msg
+            ));
+       }
     }
 
     

@@ -505,16 +505,23 @@ a.accordion-toggle:hover {
     width: 500px;
     height: 100px;
 }
-
 #piledge_documentbundle_document_document_title {
     width: 500px;
 }
-
 #piledge_comment_comment_body {
     resize: none;
     width: 383px;
     overflow-y: hidden;
 }
-
-
+#piledge_message_message_receiver_username {
+    width: 670px;
+}
+#piledge_message_message_subject {
+    width: 625px;
+}
+#piledge_message_message_content {
+    height: 400px;
+    width: 685px;
+    resize: none;
+}
 

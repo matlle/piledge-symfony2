@@ -3,7 +3,7 @@
 namespace Piledge\MessageBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Cnstraints as Assert;
+use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\ExecutionContextInterface;
 
@@ -35,6 +35,7 @@ class Message
      * @var string
      *
      * @ORM\Column(name="message_receiver_username", type="string", length=255)
+     * @Assert\NotBlank(message="The username can't be empty. Please try again")
      */
     private $message_receiver_username;
 
@@ -48,7 +49,7 @@ class Message
     /**
      * @var string
      *
-     * @ORM\Column(name="message_subject", type="string", length=255)
+     * @ORM\Column(name="message_subject", type="string", length=255, nullable=true)
      */
     private $message_subject;
 
@@ -63,6 +64,7 @@ class Message
      * @var string
      *
      * @ORM\Column(name="message_content", type="text")
+     * @Assert\NotBlank(message="The content of message can't be empty. Please try again")
      */
     private $message_content;
 
