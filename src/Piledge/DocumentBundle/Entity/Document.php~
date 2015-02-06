@@ -27,7 +27,7 @@ class Document
     
     /**
      * @ORM\ManyToOne(targetEntity="Piledge\AuthorBundle\Entity\Author")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="author_id", nullable=false)
      */
     private $author;
 
@@ -105,6 +105,16 @@ class Document
      * @Assert\Range(min=1)
      */
     private $document_number_of_page;
+
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="document_number_of_comment", type="integer")
+     * @Assert\Range(min=0)
+     */
+    private $document_number_of_comment;
+  
 
     /**
      * @var \DateTime
@@ -191,9 +201,7 @@ class Document
     */
     public function preUpload() {
 
-        if ($this->file === null) {
-            return;
-        }
+        if ($this->file === null) return;
         
         $this->set_document_path_name($this->file->guessExtension()); 
         $this->document_ext = $this->file->guessExtension();
@@ -571,4 +579,50 @@ class Document
     }
 
 
+
+    /**
+     * Set author
+     *
+     * @param \Piledge\AuthorBundle\Entity\Author $author
+     * @return Document
+     */
+    public function setAuthor(\Piledge\AuthorBundle\Entity\Author $author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \Piledge\AuthorBundle\Entity\Author 
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set document_nb_comment
+     *
+     * @param integer $documentNbComment
+     * @return Document
+     */
+    public function setDocumentNbComment($documentNbComment)
+    {
+        $this->document_nb_comment = $documentNbComment;
+
+        return $this;
+    }
+
+    /**
+     * Get document_nb_comment
+     *
+     * @return integer 
+     */
+    public function getDocumentNbComment()
+    {
+        return $this->document_nb_comment;
+    }
 }
