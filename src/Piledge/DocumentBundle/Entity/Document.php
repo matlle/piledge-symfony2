@@ -106,6 +106,16 @@ class Document
      */
     private $document_number_of_page;
 
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="document_number_of_comment", type="integer", nullable=true)
+     * @Assert\Range(min=0)
+     */
+    private $document_number_of_comment;
+  
+
     /**
      * @var \DateTime
      *
@@ -181,7 +191,7 @@ class Document
      * -- Pre Update document: Callback for update the document at every update of the entity
      */
     public function update_document_updated_at() {
-        $this->set_document_updated_at(new \Datetime());
+        $this->setDocumentUpdatedAt(new \Datetime());
     }
 
 
@@ -591,5 +601,28 @@ class Document
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Set document_number_of_comment
+     *
+     * @param integer $documentNumberOfComment
+     * @return Document
+     */
+    public function setDocumentNumberOfComment($documentNumberOfComment)
+    {
+        $this->document_number_of_comment = $documentNumberOfComment;
+
+        return $this;
+    }
+
+    /**
+     * Get document_number_of_comment
+     *
+     * @return integer 
+     */
+    public function getDocumentNumberOfComment()
+    {
+        return $this->document_number_of_comment;
     }
 }

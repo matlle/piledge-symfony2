@@ -37,6 +37,8 @@ class CommentController extends Controller
             $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
             $comment->setAuthor($user);
+            $author->setDocumentNumberOfComment((int)$author->getDocumentNumberOfComment() + 1);
+
             $comment->setDocument($author);
             $em->persist($comment);
             $em->flush();
