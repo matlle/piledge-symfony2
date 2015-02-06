@@ -34,9 +34,9 @@ class CommentController extends Controller
         $errors = $validator->validate($comment);
 
         if ($form->isValid()) {
-            $user = $this->getUser();
+            $author = $this->getUser();
             $em = $this->getDoctrine()->getManager();
-            $comment->setAuthor($user);
+            $comment->setAuthor($author);
 
             $document->setDocumentNumberOfComment((int)$document->getDocumentNumberOfComment() + 1);
 

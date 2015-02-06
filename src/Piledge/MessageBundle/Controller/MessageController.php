@@ -8,6 +8,7 @@ use Symfony\Component\Form\Form;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 
 use Piledge\MessageBundle\Entity\Message;
+use Piledge\MessageBundle\Entity\Author;
 use Piledge\MessageBundle\Form\MessageType;
 
 class MessageController extends Controller
@@ -52,9 +53,18 @@ class MessageController extends Controller
             $errors = $validator->validate($msg);
 
             if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($msg);
-                $em->flush();
+                $em_msg = $this->getDoctrine()->getManager();
+                $em_msg->persist($msg);
+
+                $author = $this->getUser();
+                $msg->setAuthor($author);
+
+                $author_receiver = $this->getDoctrine()
+                                        ->getManager()
+                                        ->getRepository('PiledgeAuthorBundle:Author')
+                                        ->findOneByUsername($msg->getMessageReceiverUsername());
+                $msg->setMessageReceiverId($author_receiver->getAuthorId());
+                $em_msg->flush();
 
                 return $this->redirect($this->generateUrl('PiledgeMessage_inbox'));
             }

@@ -24,6 +24,14 @@ class Message
      */
     private $message_id;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Piledge\AuthorBundle\Entity\Author")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="author_id", nullable=false)
+     */
+    private $author;
+
+
     /**
      * @var integer
      *
@@ -39,13 +47,7 @@ class Message
      */
     private $message_receiver_username;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="message_receiver_avatar", type="string", length=255)
-     */
-    private $message_receiver_avatar;
-
+    
     /**
      * @var string
      *
@@ -64,7 +66,7 @@ class Message
      * @var string
      *
      * @ORM\Column(name="message_content", type="text")
-     * @Assert\NotBlank(message="The content of message can't be empty. Please try again")
+     * @Assert\NotBlank(message="The content of the message can't be empty. Please try again")
      */
     private $message_content;
 
@@ -90,16 +92,6 @@ class Message
         $this->message_updated_at = new \Datetime;
     }
 
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->message_id;
-    }
 
     /**
      * Set messageReceiverId
@@ -147,28 +139,6 @@ class Message
         return $this->message_receiver_username;
     }
 
-    /**
-     * Set messageReceiverAvatar
-     *
-     * @param string $messageReceiverAvatar
-     * @return Message
-     */
-    public function setMessageReceiverAvatar($messageReceiverAvatar)
-    {
-        $this->message_receiver_avatar = $messageReceiverAvatar;
-
-        return $this;
-    }
-
-    /**
-     * Get messageReceiverAvatar
-     *
-     * @return string 
-     */
-    public function getMessageReceiverAvatar()
-    {
-        return $this->message_receiver_avatar;
-    }
 
     /**
      * Set messageSubject
@@ -283,5 +253,38 @@ class Message
     public function getMessageUpdatedAt()
     {
         return $this->message_updated_at;
+    }
+
+    /**
+     * Get message_id
+     *
+     * @return integer 
+     */
+    public function getMessageId()
+    {
+        return $this->message_id;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \Piledge\AuthorBundle\Entity\Author $author
+     * @return Message
+     */
+    public function setAuthor(\Piledge\AuthorBundle\Entity\Author $author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \Piledge\AuthorBundle\Entity\Author 
+     */
+    public function getAuthor()
+    {
+        return $this->author;
     }
 }
