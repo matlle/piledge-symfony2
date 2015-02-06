@@ -37,8 +37,10 @@
                           <p> <span class="current-descriptin">{{ d.document_description }}</span></p>
                           <br />
                           <span class="cps">
-                              {% if d.document_id %}  
-                                  <a href="{{ path('piledgeDocument_show', {'doc_id': d.document_id}) }}" class="lcomment">0 comments</a>
+                              {% if d.document_number_of_comment == 1 %}  
+                                  <a href="{{ path('piledgeDocument_show', {'doc_id': d.document_id}) }}" class="lcomment">{{ d.document_number_of_comment }} comment</a>
+                              {% elseif d.document_number_of_comment > 1 %}  
+                                  <a href="{{ path('piledgeDocument_show', {'doc_id': d.document_id}) }}" class="lcomment">{{ d.document_number_of_comment }} comments</a>
                               {% else %} 
                                   No comments 
                               {% endif %} 
