@@ -9,7 +9,7 @@
                     <li class="nav-header">Message </li>  
                     <li><a href="{{ path('piledgeMessage_new') }}"><i class=""></i>News Message</a></li>
                     <li class="active">
-                        <a href="msg.php">
+                        <a href="{{ path('piledgeMessage_inbox') }}">
                             <i class=""></i>Inbox
                             <span class="badge badge-info" style="float: right;">{% if msg_unread %}{{ msg_unread.count }}{% endif %}</span>
                         </a>
@@ -26,7 +26,7 @@
 {% endblock %}
 
 {% block file_list %}
-   <div class="span7" style="border: 1px solid #F5F5F5; width: 700px;">
+   <div class="span7" style="margin-top: -20px; border: 1px solid #F5F5F5; width: 700px;">
          
      {% block msg_zone %}
 

@@ -16,8 +16,8 @@ class MessageType extends AbstractType
     {
         $builder
             ->add('message_receiver_username', 'text')
-            ->add('message_subject', 'text')
-            ->add('message_content', 'text')
+            ->add('message_subject', 'text', array('required' => false))
+            ->add('message_content', 'textarea')
         ;
     }
     

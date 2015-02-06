@@ -20,7 +20,7 @@ class CommentController extends Controller
     public function addAction($doc_id)
     {
 
-        $author = $this->getDoctrine()
+        $document = $this->getDoctrine()
                        ->getManager()
                        ->getRepository('PiledgeDocumentBundle:Document')
                        ->find($doc_id);
@@ -37,9 +37,10 @@ class CommentController extends Controller
             $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
             $comment->setAuthor($user);
-            $author->setDocumentNumberOfComment((int)$author->getDocumentNumberOfComment() + 1);
 
-            $comment->setDocument($author);
+            $document->setDocumentNumberOfComment((int)$document->getDocumentNumberOfComment() + 1);
+
+            $comment->setDocument($document);
             $em->persist($comment);
             $em->flush();
 
