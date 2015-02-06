@@ -2,14 +2,19 @@
 
 namespace Piledge\DocumentBundle\Twig;
 
+use Doctrine\ORM\EntityManager;
+
 class AppExtension extends \Twig_Extension {
 
     public function getFilters() {
         return array(
             new \Twig_SimpleFilter('humanSize', array($this, 'HumanFileSize')),
+            //new \Twig_SimpleFilter('nbCommentByDocument', array($this, 'countCommentByDocument')),
         );
     }
 
+
+    
     public function HumanFileSize($fsize) {
     
        # size smaller then 1kb

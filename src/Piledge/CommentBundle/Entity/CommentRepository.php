@@ -27,7 +27,7 @@ class CommentRepository extends EntityRepository
 
     }
 
-    public function nbByDocument($doc_id) {
+    public function countByDocument($doc_id) {
 
         $qb = $this->createQueryBuilder('c')
                    ->join('c.document', 'd')
