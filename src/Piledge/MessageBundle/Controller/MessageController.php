@@ -19,12 +19,12 @@ class MessageController extends Controller
                          ->getManager()
                          ->getRepository('PiledgeMessageBundle:Message');
 
-        $msg_unread = $msg_repo->findMsg_unread();
+        $nb_msg_unread = $msg_repo->findMsg_unread($this->getUser()->getAuthorId());
 
-        $inbox_msg = $msg_repo->findAll();
+        $inbox_msg = $msg_repo->findInbox($this->getUser()->getAuthorId());
 
         return $this->render('PiledgeMessageBundle:Message:msg.html.twig', array(
-                   'msg_unread' => $msg_unread,
+                   'nb_msg_unread' => $nb_msg_unread,
                    'inbox_msg' => $inbox_msg
                ));
     }
@@ -37,9 +37,9 @@ class MessageController extends Controller
                          ->getManager()
                          ->getRepository('PiledgeMessageBundle:Message');
 
-        $msg_unread = $msg_repo->findMsg_unread();
+        $nb_msg_unread = $msg_repo->findMsg_unread($this->getUser()->getAuthorId());
 
-        $inbox_msg = $msg_repo->findAll();
+        $inbox_msg = $msg_repo->findInbox($this->getUser()->getAuthorId());
 
         $msg = new Message;
         $form = $this->createForm(new MessageType, $msg);
@@ -66,7 +66,7 @@ class MessageController extends Controller
                 $msg->setMessageReceiverId($author_receiver->getAuthorId());
                 $em_msg->flush();
 
-                return $this->redirect($this->generateUrl('PiledgeMessage_inbox'));
+                return $this->redirect($this->generateUrl('piledgeMessage_inbox'));
             }
         }
 
@@ -74,7 +74,7 @@ class MessageController extends Controller
 
             return $this->render('PiledgeMessageBundle:Message:nmsg.html.twig', array(
                 'form' => $form->createView(),
-                'msg_unread' => $msg_unread,
+                'nb_msg_unread' => $nb_msg_unread,
                 'inbox_msg' => $inbox_msg,
                 'errors' => $errors
             ));
@@ -82,7 +82,7 @@ class MessageController extends Controller
         } else {
             return $this->render('PiledgeMessageBundle:Message:nmsg.html.twig', array(
                 'form' => $form->createView(),
-                'msg_unread' => $msg_unread,
+                'nb_msg_unread' => $nb_msg_unread,
                 'inbox_msg' => $inbox_msg
             ));
        }

@@ -13,18 +13,24 @@ use Doctrine\ORM\EntityRepository;
 class MessageRepository extends EntityRepository
 {
 
-    public function findMsg_unread() {
+    public function findMsg_unread($reid) {
         
         $qb = $this->createQueryBuilder('m')
-                   ->where('m.message_is_read = false');
+                   ->where('m.message_receiver_id = :reid')
+                   ->setParameter(':reid', $reid)
+                   ->andWhere('m.message_is_read = false');
 
-        return $qb->getQuery()
-                  ->getResult();
+         return count($qb->getQuery()->getResult());
+         
     }
 
 
-    public function findInbox() {
+    public function findInbox($reid) {
+         $qb = $this->createQueryBuilder('m')
+                    ->where('m.message_receiver_id = :reid')
+                    ->setParameter(':reid', $reid);
 
-        return '';
+         return $qb->getQuery()->getArrayResult();
+
     }
 }

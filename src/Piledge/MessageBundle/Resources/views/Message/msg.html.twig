@@ -11,7 +11,7 @@
                     <li class="active">
                         <a href="{{ path('piledgeMessage_inbox') }}">
                             <i class=""></i>Inbox
-                            <span class="badge badge-info" style="float: right;">{% if msg_unread %}{{ msg_unread.count }}{% endif %}</span>
+                            <span class="badge badge-info" style="float: right;">{% if nb_msg_unread >= 1 %}{{ nb_msg_unread }}{% endif %}</span>
                         </a>
                     </li>
                     <li><a href="{{ path('piledgeMessage_sent') }}">Sent</a></li>

@@ -1,15 +1,15 @@
 
-{% for i in inbox %}
+{% for i in inbox_msg %}
 
 <table class="list-inbox">
-     <tr {% if not i.message_is_read %} style="background-color: #f2f2f2;" {% endif %}>
+     <tr {% if not i.getMessageIsRead() %} style="background-color: #f2f2f2;" {% endif %}>
         <td> 
             <div>
               <input type="checkbox">  
-                  {% if not i.avatar_50x50 %}
+                  {% if not 1 %} 
                       <img src="Public/img/default.png" alt="Avatar" style="width: 50px; height: 50px;"  alt="Avatar" style="width: 50px; height: 50px;" />
                   {% else %}
-                      <img src="{{ i.avatar_50x50 }}" alt="Avatar" style="width: 50px; height: 50px;"  alt="Avatar" style="width: 50px; height: 50px;" />
+                      <img src="{# avatar here #}" alt="Avatar" style="width: 50px; height: 50px;"  alt="Avatar" style="width: 50px; height: 50px;" />
                   {% endif %}
                
                <span style="margin-bottom: -80px;">
@@ -19,7 +19,7 @@
         </td>
         <td>
             <div style="margin-left: -2px; margin-bottom: 30px; width: 40px;">
-                <a href="myactivities.php?username={{ i.author_pseudo }}"> {{ i.author_pseudo |title }} </a>
+                <a href="myactivities.php?username={{ i.author.author_username }}"> {{ i.author_pseudo |title }} </a>
             </div>
         </td>
         <td>
