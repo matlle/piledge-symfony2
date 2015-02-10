@@ -287,4 +287,14 @@ class Message
     {
         return $this->author;
     }
+
+    public function isUsernameExist() {
+        $username = $this->getDoctrine()
+                         ->getManager()
+                         ->getRepository('PiledgeAuthorBundle:Author')
+                         ->findOneByUsername($this->message_receiver_username);
+        if($username == null) return false;
+        else return true;
+    }
+
 }

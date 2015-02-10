@@ -11,8 +11,13 @@ use Piledge\MessageBundle\Entity\Message;
 use Piledge\MessageBundle\Entity\Author;
 use Piledge\MessageBundle\Form\MessageType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 class MessageController extends Controller
-{
+{   
+    /**
+     * @Security("has_role('ROLE_AUTHOR')")
+     */
     public function inboxAction()
     {
         $msg_repo = $this->getDoctrine()
@@ -31,6 +36,9 @@ class MessageController extends Controller
 
 
     
+    /**
+     * @Security("has_role('ROLE_AUTHOR')")
+     */
     public function nmsgAction() {
 
         $msg_repo = $this->getDoctrine()
@@ -52,23 +60,26 @@ class MessageController extends Controller
             $form->bind($request);
             $errors = $validator->validate($msg);
 
-            if ($form->isValid()) {
+                if ($form->isValid()) {
                 $em_msg = $this->getDoctrine()->getManager();
                 $em_msg->persist($msg);
-
-                $author = $this->getUser();
-                $msg->setAuthor($author);
 
                 $author_receiver = $this->getDoctrine()
                                         ->getManager()
                                         ->getRepository('PiledgeAuthorBundle:Author')
                                         ->findOneByUsername($msg->getMessageReceiverUsername());
+
+                $author = $this->getUser();
+                $msg->setAuthor($author);
+
                 $msg->setMessageReceiverId($author_receiver->getAuthorId());
                 $em_msg->flush();
 
                 return $this->redirect($this->generateUrl('piledgeMessage_inbox'));
+
             }
-        }
+
+     }
 
         if(count($errors) > 0) {
 
@@ -89,6 +100,9 @@ class MessageController extends Controller
     }
 
     
+    /**
+     * @Security("has_role('ROLE_AUTHOR')")
+     */
     public function sentAction() {
     }
 

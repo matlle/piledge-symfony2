@@ -18,11 +18,10 @@
     <form enctype="multipart/form-data"  method="post" action="{{ path('piledgeMessage_new') }}">
         <input type="hidden" name="ap" value="{{ app.user.getAuthorUsername }}">
         <span class="add-on">To</span>
-            {{ form_widget(form.message_receiver_username, {'attr': {'placeholder': 'Username', 'class': 'span2'}}) }} 
-
+            {{ form_widget(form.message_receiver_username, {'attr': {'placeholder': 'Username', 'class': 'span2'}}) }} <br/><br/> 
 
         <span class="add-on">Subject</span>
-        {{ form_widget(form.message_subject, {'attr': {'placeholder': 'Description'}}) }} 
+        {{ form_widget(form.message_subject, {'attr': {'placeholder': 'Description'}}) }} <br/><br/> 
 
         {{ form_widget(form.message_content, {'attr': {'placeholder': 'Write your message...'}}) }}
 

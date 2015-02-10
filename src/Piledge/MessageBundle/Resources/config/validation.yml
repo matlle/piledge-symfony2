@@ -1,0 +1,4 @@
+Piledge\MessageBundle\Entity\Author:
+    getters:
+        usernameExist:
+            - "True": { message: "No user with this username. Try again"}

@@ -27,6 +27,8 @@ class MessageRepository extends EntityRepository
 
     public function findInbox($reid) {
          $qb = $this->createQueryBuilder('m')
+                    ->join('m.author', 'a')
+                    ->addSelect('a')
                     ->where('m.message_receiver_id = :reid')
                     ->setParameter(':reid', $reid);
 

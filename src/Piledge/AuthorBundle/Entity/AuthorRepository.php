@@ -17,6 +17,7 @@ class AuthorRepository extends EntityRepository
         $qb->where('a.author_username = :username')
             ->setParameter('username', $username);
 
-        return $qb->getQuery()->getSingleResult();
+        return $qb->getQuery()->getOneOrNullResult();
+        //return $qb->getQuery()->getSingleResult();
     }
 }

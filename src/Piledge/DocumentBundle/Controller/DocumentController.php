@@ -50,12 +50,22 @@ class DocumentController extends Controller
         }
 
 
+        $nb_msg_unread = 0;
+        if($this->getUser()) {
+            $nb_msg_unread = $this->getDoctrine()
+                                  ->getManager()
+                                  ->getRepository('PiledgeMessageBundle:Message')
+                                  ->findMsg_unread($this->getUser()->getAuthorId());
+
+        }
+
         //return new Response("The result is: ".print_r($document));
 
         return $this->render('PiledgeDocumentBundle:Document:show.html.twig', array(
             'doc' => $doc_data,
             'coms' => $comments,
             'comment_form' => $comment_form->createView(),
+            'nb_msg_unread' => $nb_msg_unread,
             'errors' => $errors
 
         ));
@@ -91,18 +101,33 @@ class DocumentController extends Controller
                 return $this->redirect($this->generateUrl('piledgeGle_homepage'));
             }
         }
+
+
+        $nb_msg_unread = 0;
+        if($this->getUser()) {
+            $nb_msg_unread = $this->getDoctrine()
+                                  ->getManager()
+                                  ->getRepository('PiledgeMessageBundle:Message')
+                                  ->findMsg_unread($this->getUser()->getAuthorId());
+
+        }
+
+
+
         
         if (count($errors) > 0) {       
 
             return $this->render('PiledgeDocumentBundle:Document:upload.html.twig', array(
                 'form' => $form->createView(),
+                'nb_msg_unread' => $nb_msg_unread,
                 'errors' => $errors
                ));
 
         }else {
 
             return $this->render('PiledgeDocumentBundle:Document:upload.html.twig', array(
-               'form' => $form->createView()
+                'form' => $form->createView(),
+                'nb_msg_unread' => $nb_msg_unread
                 ));
         }
 

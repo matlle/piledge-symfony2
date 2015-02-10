@@ -2,7 +2,7 @@
 {% for i in inbox_msg %}
 
 <table class="list-inbox">
-     <tr {% if not i.getMessageIsRead() %} style="background-color: #f2f2f2;" {% endif %}>
+     <tr {% if not i.message_is_read %} style="background-color: #f2f2f2;" {% endif %}>
         <td> 
             <div>
               <input type="checkbox">  
@@ -19,7 +19,7 @@
         </td>
         <td>
             <div style="margin-left: -2px; margin-bottom: 30px; width: 40px;">
-                <a href="myactivities.php?username={{ i.author.author_username }}"> {{ i.author_pseudo |title }} </a>
+                <a href="myactivities.php?username={{ i.author.author_username }}"> {{ i.author.author_username |title }} </a>
             </div>
         </td>
         <td>
@@ -34,12 +34,12 @@
         </td> 
         <td>
             <div style="margin-left: 0px; width: 20px;">
-             <a href="msg.php?mid={{ i.message_id }}"> {{ i.message_attachment }} </a>
+             <a href="msg.php?mid={{ i.message_id }}">{{ "Attachement here" }}</a>
             </div>
         </td>
         <td>
             <div style="margin-left: 5px; width: 130px;">
-               {{ i.message_created_at }}
+               {{ i.message_created_at|date }}
             </div>
         </td>
         <td>
